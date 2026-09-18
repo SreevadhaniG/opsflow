@@ -1,9 +1,6 @@
-export interface CreateUserDto{
-    name: string;
-    email: string;
-}
+import {z} from "zod";
+import { CreateUserSchema, UpdateUserSchema } from "../schemas/user.schema";
 
-export interface UpdateUserDto{
-    name?: string;
-    email?: string;
-}
+export type CreateUserDto = z.infer<typeof CreateUserSchema>;
+
+export type UpdateUserDto = z.infer<typeof UpdateUserSchema>;

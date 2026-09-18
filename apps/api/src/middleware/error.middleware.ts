@@ -5,20 +5,17 @@ import { ZodError } from "zod";
 function errorMiddleware(err: Error, _req: Request, res: Response, _next: NextFunction){
     if(err instanceof ZodError){
         const errors = err.issues.map((issue) => {
-            const path = issue.path;
+            const field = issue.path.join(".");
             const message = issue.message;
             return {
-                path,
+                field,
                 message
             };
         });
 
-        for(const err of errors){
-            console.log(err);
-        }
-
         return res.status(400).json({
-            message: "Validation Error"
+            message: "Validation Error",
+            errors
         });
     }
     else if(err instanceof AppError){
