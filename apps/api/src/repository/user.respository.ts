@@ -1,41 +1,59 @@
+import { ZodEmail } from "zod";
 import { users } from "../data/users.data"
-import { CreateUserDto, UpdateUserDto } from "../types/user.dto";
 import User from "../types/user.types";
+import { CreateUserDto, UpdateUserDto } from "../types/user.dto";
 
-function getUsers() : User[]{
-    return users;
+function getUsers(page?: number, limit?: number) : {users: User[], total:number} {
+    if(page === undefined || limit === undefined){
+        return {
+            users: users,
+            total: users.length
+        };
+    }
+
+    const startIndex = (page - 1)*limit;
+    const endIndex = startIndex + limit;
+
+    return {
+        users: users.slice(startIndex, endIndex),
+        total: users.length
+    }
 }
 
-function getUserById(id: number): User | undefined{
+async function getUserById(id: number): Promise<User | undefined>{
     const user = users.find(currentUser => currentUser.id === id);
 
     return user;
 }
 
-function createUser(data: CreateUserDto): User{
-    let highestId = 0;
-
-    for(const user of users){
-        if(user.id > highestId){
-            highestId = user.id;
-        }
+    async function getUserByEmail(email: string): Promise<User | undefined>{
+        return users.find(user => user.email === email);
     }
 
-    const id = highestId + 1;
-    const {name, email} = data;
+    async function createUser(data: CreateUserDto): Promise<User>{
+        let highestId = 0;
 
-    const newUser = {
-        id,
-        name,
-        email
-    };
+        for(const user of users){
+            if(user.id > highestId){
+                highestId = user.id;
+            }
+        }
 
-    users.push(newUser);
+        const id = highestId + 1;
+        const {name, email} = data;
 
-    return newUser;
-}
+        const newUser = {
+            id,
+            name,
+            email
+        };
 
-function updateUser(id: number, data: UpdateUserDto): User | null{
+        users.push(newUser);
+
+        return newUser;
+    }
+
+async function updateUser(id: number, data: UpdateUserDto): Promise<User | null>{
     const user = users.find(currentUser => currentUser.id === id);
 
     if(!user){
@@ -53,7 +71,7 @@ function updateUser(id: number, data: UpdateUserDto): User | null{
     return user;
 }
 
-function deleteUser(id: number): boolean{
+async function deleteUser(id: number): Promise<boolean>{
     const userIndex = users.findIndex(user => user.id === id);
 
     if(userIndex === -1){
@@ -68,6 +86,7 @@ function deleteUser(id: number): boolean{
 export default {
     getUsers,
     getUserById,
+    getUserByEmail,
     createUser,
     updateUser,
     deleteUser

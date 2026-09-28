@@ -3,6 +3,7 @@ import AppError from "../error/appError";
 import { ZodError } from "zod";
 
 function errorMiddleware(err: Error, _req: Request, res: Response, _next: NextFunction){
+    console.log("Error middleware reached"+err);
     if(err instanceof ZodError){
         const errors = err.issues.map((issue) => {
             const field = issue.path.join(".");

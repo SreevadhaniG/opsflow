@@ -36,3 +36,5 @@ dist/
 build/
 out/
 target/
+
+/src/generated/prisma

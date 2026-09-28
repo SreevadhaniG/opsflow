@@ -1,67 +1,65 @@
 import { Request, Response } from "express";
+import { UserListResponseDto, UserResponseDto } from "../types/user.dto";
+import {
+  UserListResponseSchema,
+  UserResponseSchema,
+} from "../schemas/user.schema";
+
 import AppError from "../error/appError";
 import userService from "../service/user.service";
-import { CreateUserSchema, UpdateUserSchema } from "../schemas/user.schema";
 
-const validateName = /^[a-zA-Z\s]+$/;
-const validateEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+function getUsers(req: Request, res: Response) {
+  const page = req.query.page !== undefined ? Number(req.query.page) : undefined;
+  const limit = req.query.limit !== undefined ? Number(req.query.limit) : undefined;
 
-function getUsers(_req: Request, res: Response) {
-  res.json(userService.getUsers());
+  const result = userService.getUsers(page, limit);
+
+  const response : UserListResponseDto = {
+    users: result.users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email
+    })),
+    meta: result.meta
+  }
+
+  UserListResponseSchema.parse(response);
+
+  res.status(200).json(response);
 }
 
-function getUserById(req: Request, res: Response) {
+async function getUserById(req: Request, res: Response) {
   const id = Number(req.params.id);
 
-  if (Number.isNaN(id)) {
-    throw new AppError("Invalid ID", 400);
-  }
-
-  const user = userService.getUserById(id);
-
-  if (!user) {
-    throw new AppError("User Not Found", 404);
-  }
+  const user = await userService.getUserById(id);
 
   res.status(200).json(user);
 }
 
-function createUser(req: Request, res: Response) {
-  const data = CreateUserSchema.parse(req.body);
-
-  const newUser = userService.createUser(data);
+async function createUser(req: Request, res: Response) {
+  const newUser = await userService.createUser(req.body);
 
   res.status(201).json(newUser);
 }
 
-function updateUser(req: Request, res: Response) {
+async function updateUser(req: Request, res: Response) {
   const id = Number(req.params.id);
 
-  if (Number.isNaN(id)) {
-    throw new AppError("Invalid ID format", 400);
-  }
+  const updatedUser = await userService.updateUser(id, req.body);
 
-  const data = UpdateUserSchema.parse(req.body);
-
-  const updatedUser = userService.updateUser(id, data);
-
-  if(updatedUser === null){
+  if (updatedUser === null) {
     throw new AppError("User not found", 404);
   }
 
   res.status(200).json(updatedUser);
 }
 
-function deleteUser(req: Request, res: Response){
+async function deleteUser(req: Request, res: Response) {
   const id = Number(req.params.id);
 
-  if(Number.isNaN(id)){
-    throw new AppError("Invalid ID format", 400);
-  }
+  const deleted = await userService.deleteUser(id);
 
-  const deleted = userService.deleteUser(id);
-
-  if(!deleted){
+  if (!deleted) {
     throw new AppError("User not found", 404);
   }
 
@@ -73,5 +71,5 @@ export default {
   getUserById,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
 };
