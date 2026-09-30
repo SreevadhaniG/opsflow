@@ -1,6 +1,6 @@
-import AppError from "../error/appError";
-import userRepository from "../repository/user.respository";
-import { CreateUserDto, UpdateUserDto } from "../types/user.dto";
+import AppError from "../error/appError.js";
+import userRepository from "../repository/user.respository.js";
+import { CreateUserDto, UpdateUserDto } from "../types/user.dto.js";
 
 function getUsers(page?: number, limit?: number) {
   const result = userRepository.getUsers(page, limit);

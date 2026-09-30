@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 
-import requestLogger from "./middleware/requestLogger.middleware";
-import errorMiddleware from "./middleware/error.middleware";
+import requestLogger from "./middleware/requestLogger.middleware.js";
+import errorMiddleware from "./middleware/error.middleware.js";
 
 import userRouter from "./routes/user.routes.js";
 import { error } from "node:console";

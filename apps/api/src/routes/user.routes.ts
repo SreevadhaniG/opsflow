@@ -1,10 +1,10 @@
 import express from "express";
 
-import userController from "../controllers/user.controller";
-import authMiddleware from "../middleware/auth.middleware";
-import {validate} from "../middleware/validation.middleware";
+import userController from "../controllers/user.controller.js";
+import authMiddleware from "../middleware/auth.middleware.js";
+import {validate} from "../middleware/validation.middleware.js";
 
-import { CreateUserSchema, QuerySchema, UpdateUserSchema, UserIdSchema } from "../schemas/user.schema";
+import { CreateUserSchema, QuerySchema, UpdateUserSchema, UserIdSchema } from "../schemas/user.schema.js";
 
 const router = express.Router();
 

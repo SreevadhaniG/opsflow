@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
-import { UserListResponseDto, UserResponseDto } from "../types/user.dto";
+import { UserListResponseDto, UserResponseDto } from "../types/user.dto.js";
 import {
   UserListResponseSchema,
   UserResponseSchema,
-} from "../schemas/user.schema";
+} from "../schemas/user.schema.js";
 
-import AppError from "../error/appError";
-import userService from "../service/user.service";
+import AppError from "../error/appError.js";
+import userService from "../service/user.service.js";
+import User from "../types/user.types.js";
 
 function getUsers(req: Request, res: Response) {
   const page = req.query.page !== undefined ? Number(req.query.page) : undefined;
@@ -15,7 +16,7 @@ function getUsers(req: Request, res: Response) {
   const result = userService.getUsers(page, limit);
 
   const response : UserListResponseDto = {
-    users: result.users.map((user) => ({
+    users: result.users.map((user : User) => ({
       id: user.id,
       name: user.name,
       email: user.email

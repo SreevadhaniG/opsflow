@@ -1,5 +1,5 @@
 import {z} from "zod";
-import { CreateUserSchema, UpdateUserSchema, UserListResponseSchema, UserResponseSchema } from "../schemas/user.schema";
+import { CreateUserSchema, UpdateUserSchema, UserListResponseSchema, UserResponseSchema } from "../schemas/user.schema.js";
 
 export type CreateUserDto = z.infer<typeof CreateUserSchema>;
 

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import AppError from "../error/appError";
+import AppError from "../error/appError.js";
 import { ZodError } from "zod";
 
 function errorMiddleware(err: Error, _req: Request, res: Response, _next: NextFunction){

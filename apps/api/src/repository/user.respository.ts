@@ -1,7 +1,7 @@
 import { ZodEmail } from "zod";
-import { users } from "../data/users.data"
-import User from "../types/user.types";
-import { CreateUserDto, UpdateUserDto } from "../types/user.dto";
+import { users } from "../data/users.data.js"
+import User from "../types/user.types.js";
+import { CreateUserDto, UpdateUserDto } from "../types/user.dto.js";
 
 function getUsers(page?: number, limit?: number) : {users: User[], total:number} {
     if(page === undefined || limit === undefined){
