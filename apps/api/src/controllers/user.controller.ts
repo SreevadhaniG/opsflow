@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { UserListResponseDto, UserResponseDto } from "../types/user.dto.js";
+import { UserListResponseDto } from "../types/user.dto.js";
 import {
   UserListResponseSchema,
-  UserResponseSchema,
 } from "../schemas/user.schema.js";
 
 import AppError from "../error/appError.js";
