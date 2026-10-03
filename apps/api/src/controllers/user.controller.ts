@@ -9,11 +9,11 @@ import AppError from "../error/appError.js";
 import userService from "../service/user.service.js";
 import User from "../types/user.types.js";
 
-function getUsers(req: Request, res: Response) {
+async function getUsers(req: Request, res: Response) {
   const page = req.query.page !== undefined ? Number(req.query.page) : undefined;
   const limit = req.query.limit !== undefined ? Number(req.query.limit) : undefined;
 
-  const result = userService.getUsers(page, limit);
+  const result = await userService.getUsers(page, limit);
 
   const response : UserListResponseDto = {
     users: result.users.map((user : User) => ({

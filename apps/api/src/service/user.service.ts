@@ -1,9 +1,9 @@
 import AppError from "../error/appError.js";
-import userRepository from "../repository/user.respository.js";
+import userRepository from "../repository/user.repository.js";
 import { CreateUserDto, UpdateUserDto } from "../types/user.dto.js";
 
-function getUsers(page?: number, limit?: number) {
-  const result = userRepository.getUsers(page, limit);
+async function getUsers(page?: number, limit?: number) {
+  const result = await userRepository.getUsers(page, limit);
 
   const users = result.users;
 
@@ -50,7 +50,7 @@ async function createUser(data: CreateUserDto) {
 }
 
 async function updateUser(id: number, data: UpdateUserDto) {
-  return userRepository.updateUser(id, data);
+  return await userRepository.updateUser(id, data);
 }
 
 async function deleteUser(id: number) {
