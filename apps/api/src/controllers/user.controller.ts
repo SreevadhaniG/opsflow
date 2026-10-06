@@ -6,7 +6,6 @@ import {
 
 import AppError from "../error/appError.js";
 import userService from "../service/user.service.js";
-import User from "../types/user.types.js";
 
 async function getUsers(req: Request, res: Response) {
   const page = req.query.page !== undefined ? Number(req.query.page) : undefined;
@@ -15,7 +14,7 @@ async function getUsers(req: Request, res: Response) {
   const result = await userService.getUsers(page, limit);
 
   const response : UserListResponseDto = {
-    users: result.users.map((user : User) => ({
+    users: result.users.map((user) => ({
       id: user.id,
       name: user.name,
       email: user.email

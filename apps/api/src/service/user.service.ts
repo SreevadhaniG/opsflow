@@ -43,10 +43,16 @@ async function createUser(data: CreateUserDto) {
   const user = await userRepository.getUserByEmail(data.email);
 
   if(user){
-    throw new AppError("User already exist with this email", 409);
+    throw new AppError("User with this email already exists", 409);
   }
   
-  return userRepository.createUser(data);
+  const newUser = await userRepository.createUser(data);
+
+  if(!newUser){
+    throw new AppError("User with this email already exists" , 409);
+  }
+
+  return newUser;
 }
 
 async function updateUser(id: number, data: UpdateUserDto) {

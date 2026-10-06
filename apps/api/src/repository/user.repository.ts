@@ -47,12 +47,20 @@ async function getUserByEmail(email: string) {
 }
 
 async function createUser(data: CreateUserDto) {
-  return prisma.user.create({
-    data: {
-      name: data.name,
-      email: data.email,
-    },
-  });
+  try{
+    return await prisma.user.create({
+      data: {
+        name: data.name,
+        email: data.email
+      }
+    });
+  } catch(error) {
+    if(error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002"){
+      return null;
+    }
+
+    throw error;
+  }
 }
 
 async function updateUser(id: number, data: UpdateUserDto) {
